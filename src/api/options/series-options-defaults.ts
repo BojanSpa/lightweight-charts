@@ -110,4 +110,5 @@ export const seriesOptionsDefaults: SeriesOptionsCommon = {
 		precision: 2,
 		minMove: 0.01,
 	},
+	paneIndex: 0,
 };

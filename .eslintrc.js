@@ -53,9 +53,6 @@ module.exports = {
 		jsdoc: {
 			ignoreInternal: true,
 		},
-		react: {
-			version: require('./website/package.json').dependencies.react.slice(1),
-		},
 	},
 	extends: [
 		'eslint:recommended',
@@ -185,28 +182,6 @@ module.exports = {
 				sourceType: 'module',
 			},
 			overrides: [
-				{
-					files: ['website/**/*.ts', 'website/**/*.tsx'],
-					parserOptions: {
-						project: 'website/tsconfig.json',
-						sourceType: 'module',
-					},
-					rules: {
-						'@typescript-eslint/naming-convention': [
-							'error',
-
-							// allow PascalCase for react components
-							...getNamingConventionRules(['PascalCase']),
-						],
-					},
-				},
-				{
-					files: ['website/src/**/*.tsx'],
-					rules: {
-						'import/no-default-export': 'off',
-					},
-				},
-
 				// note this rule MUST be the last in this overrides list
 				// because it should be applied last and override parserOptions correctly
 				// otherwise typescript-eslint will raise an error that it cannot

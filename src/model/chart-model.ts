@@ -533,16 +533,15 @@ export class ChartModel implements IDestroyable {
 		} else {
 			// adding to the end - common case
 			this._panes.push(pane);
+			index = this._panes.length - 1;
 		}
-
-		const actualIndex = (index === undefined) ? this._panes.length - 1 : index;
 
 		// we always do autoscaling on the creation
 		// if autoscale option is true, it is ok, just recalculate by invalidation mask
 		// if autoscale option is false, autoscale anyway on the first draw
 		// also there is a scenario when autoscale is true in constructor and false later on applyOptions
 		const mask = InvalidateMask.full();
-		mask.invalidatePane(actualIndex, {
+		mask.invalidatePane(index, {
 			level: InvalidationLevel.None,
 			autoScale: true,
 		});
@@ -766,7 +765,16 @@ export class ChartModel implements IDestroyable {
 	}
 
 	public createSeries<T extends SeriesType>(seriesType: T, options: SeriesOptionsMap[T]): Series<T> {
-		const pane = this._panes[0];
+		if (this._panes.length - 1 < options.paneIndex) {
+			const maxPaneIndex = this._panes.length - 1;
+			const missingIndexesCount = options.paneIndex - maxPaneIndex;
+
+			Array
+				.from({ length: missingIndexesCount })
+				.forEach(() => this.createPane());
+		}
+
+		const pane = this._panes[options.paneIndex];
 		const series = this._createSeries(options, seriesType, pane);
 		this._serieses.push(series);
 

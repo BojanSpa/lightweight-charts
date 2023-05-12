@@ -278,26 +278,6 @@ jobs:
           command: node scripts/compare-size-with-merge-base.js
       - run: npm run size-limit
 
-  build-docusaurus-website:
-    executor: node16-executor
-    steps:
-      - checkout-with-deps
-      - run: npm run build:prod
-      - run:
-          name: "Install dependencies and build website"
-          command: |
-            cd website
-            npm install
-            npm run build
-      - run:
-          # we need to run this check here because only here we have generated md files of the website
-          name: "Check website markdown links"
-          command: npm run check-markdown-links -- --check-website-links
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - website
-
 workflows:
   version: 2
 
@@ -378,8 +358,3 @@ workflows:
           filters: *default-filters
           requires:
             - build
-      - build-docusaurus-website:
-          filters: *default-filters
-          requires:
-            - install-deps
-            - install-deps-website

@@ -743,6 +743,13 @@ export interface SeriesOptionsCommon {
 	 * ```
 	 */
 	autoscaleInfoProvider?: AutoscaleInfoProvider;
+
+    /**
+     * Index of the pane in which this series should be drawn.
+     *
+     * @defaultValue `0`
+     */
+	paneIndex: number;
 }
 
 /**
